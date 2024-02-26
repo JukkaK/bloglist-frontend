@@ -53,12 +53,18 @@ const App = () => {
   const listBlogs = () => (
     <div>
       <h2>blogs</h2>
+      <button onClick={doLogout}>logout</button>
       <p>{user.name} logged-in</p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
   )
+
+  const doLogout = () => {
+    window.localStorage.removeItem("loggedBlogappUser");
+    setUser(null);
+  };
 
   // const blogForm = () => ( 
   //   <form onSubmit={addBlog}>
