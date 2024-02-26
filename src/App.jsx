@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import NewPost from './components/NewPost'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -10,6 +11,7 @@ const App = () => {
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [newPost, setNewPost] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -55,26 +57,28 @@ const App = () => {
       <h2>blogs</h2>
       <button onClick={doLogout}>logout</button>
       <p>{user.name} logged-in</p>
+      <NewPost onCreate={onCreatePost} />  
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
   )
 
+  const createNewPost = () => (
+    <div>
+      <h2>create new</h2>
+      <NewPost onCreate={addPost} />
+    </div>
+  )
+
+  const onCreatePost = (blog) => {
+    setBlogs(blogs.concat(blog));
+  };
+
   const doLogout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setUser(null);
   };
-
-  // const blogForm = () => ( 
-  //   <form onSubmit={addBlog}>
-  //     <input
-  //       value={newBlog}
-  //       onChange={handleBlogChange}
-  //     />
-  //     <button type="submit">save</button>
-  //   </form>  
-  // )
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -102,7 +106,7 @@ const App = () => {
       <Notification message={errorMessage} />
 
       {user === null ?
-      loginForm() :
+      loginForm() :      
       listBlogs()
     }
     </div>
