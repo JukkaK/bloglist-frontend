@@ -73,6 +73,7 @@ const App = () => {
 
   const onCreatePost = (blog) => {
     setBlogs(blogs.concat(blog));
+    setErrorMessage('New post added ' + blog.title + ' by ' + blog.author)
   };
 
   const doLogout = () => {
@@ -93,7 +94,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {      
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
